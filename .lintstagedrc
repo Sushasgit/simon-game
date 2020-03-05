@@ -1,0 +1,10 @@
+{
+  "app/**/*.{js,jsx,json,css}": [
+    "prettier --write",
+    "git add"
+  ],
+    "**/*.+(js|jsx)": [
+    "eslint --fix --max-warnings=0",
+    "git add"
+  ],
+}
