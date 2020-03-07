@@ -12,7 +12,25 @@ export const SET_COLOR = 'SET_COLOR';
 export const TOGGLE_PLAYING = 'TOGGLE_PLAYING';
 export const SET_USER_SEQUENCE = 'SET_USER_SEQUENCE';
 
-export const sounds = [
+export const LEVELS = [
+    {
+        id: 1,
+        name: 'Easy',
+        time: 1500,
+    },
+    {
+        id: 2,
+        name: 'Medium',
+        time: 1000,
+    },
+    {
+        id: 3,
+        name: 'Hard',
+        time: 400,
+    },
+];
+
+export const SOUNDS = [
     {
         id: 1,
         audio: new Audio(sound1),

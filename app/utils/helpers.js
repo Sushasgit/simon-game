@@ -1,5 +1,7 @@
 export const fillArray = length => {
-    const array = Array.from({ length }, () => Math.floor(Math.random() * 3));
+    const array = Array.from({ length }, () =>
+        Math.floor(Math.random() * length),
+    );
     return array;
 };
 

@@ -16,16 +16,13 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "axios": "^0.19.2",
-    "color": "^3.1.2",
     "file-loader": "^5.1.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-is": "^16.13.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "uid": "1.0.0"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

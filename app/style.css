@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font: 16px 'Nunito Sans', 'Helvetica', sans-serif;
+}
+
+.main {
+    text-align: center;
+}

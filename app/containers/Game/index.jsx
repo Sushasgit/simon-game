@@ -2,23 +2,40 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
-import { sounds } from '../../utils/constants';
 import Square from '../../components/Square';
+import Select from '../../components/Select';
 import {
     setActiveColor,
     togglePlaying,
     setUserAnswer,
     nextRound,
     gameOver,
+    changeLevel,
 } from '../../actions';
 import { fillArray, asyncActiomWrap } from '../../utils/helpers';
+import { SOUNDS, LEVELS } from '../../utils/constants';
 
 const Container = styled.section`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 200px);
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 650px;
+    margin: 30px auto;
+    border-bottom: 2px solid #000;
+    border-left: 2px solid #000;
+
+    & > button {
+        border-top: 2px solid #000;
+        border-right: 2px solid #000;
+        margin: 0;
+    }
+`;
+
+const Button = styled.button`
+    display: inline-block;
+    padding: 10px 50px;
+    font: 18px 'Nunito Sans', 'Helvetica', sans-serif;
+    border-radius: 7px;
 `;
 
 class Game extends Component {
@@ -30,9 +47,10 @@ class Game extends Component {
     }
 
     hilghtItem = item => {
-        this.props.setActiveColor(item);
+        const { setActiveColor } = this.props;
+        setActiveColor(item);
         this.hilghtTimer = setTimeout(() => {
-            this.props.setActiveColor(null);
+            setActiveColor(null);
         }, 200);
 
         return () => {
@@ -42,39 +60,33 @@ class Game extends Component {
 
     startGame = () => {
         const arr = fillArray(4);
-        const { nextRound } = this.props;
+        const { nextRound, togglePlaying } = this.props;
         asyncActiomWrap(nextRound, arr).then(() => {
             this.playSequence();
-            this.props.togglePlaying(true);
+            togglePlaying(true);
         });
     };
 
     playSequence = () => {
-        const { sequence } = this.props;
+        const { sequence, level } = this.props;
         let timeIndex = 0;
         const arr = sequence.map(item => {
-            timeIndex += 1000;
+            timeIndex += level.time;
             return this.promiseTimeout(timeIndex, item);
         });
-        console.log(arr);
         Promise.all(arr).then(() => {
-            console.log('FINISHED all');
-            this.props.togglePlaying(false);
+            const { togglePlaying } = this.props;
+            togglePlaying(false);
         });
     };
 
     promiseTimeout = (delay, item) => {
-        console.log('Delay', delay);
         return new Promise(resolve => {
             setTimeout(() => {
-                const { setActiveColor } = this.props;
                 resolve();
-                sounds[item].audio.play();
+                SOUNDS[item].audio.play();
                 this.hilghtItem(item);
             }, delay);
-        }).then(() => {
-            console.log('end of promise', item);
-            // this.props.setActiveColor(null)
         });
     };
 
@@ -86,8 +98,8 @@ class Game extends Component {
         } else {
             if (userSequence.length === sequence.length) {
                 const arr = fillArray(2);
-                const { nextRound } = this.props;
-                this.props.togglePlaying(true);
+                const { nextRound, togglePlaying } = this.props;
+                togglePlaying(true);
                 asyncActiomWrap(nextRound, arr).then(() => {
                     this.playSequence();
                 });
@@ -97,20 +109,34 @@ class Game extends Component {
 
     testFunc = index => {
         const { sequence, userSequence, setUserAnswer } = this.props;
+        SOUNDS[index].audio.play();
+        this.hilghtItem(index);
         asyncActiomWrap(setUserAnswer, index).then(() => {
             this.checkResult(userSequence, sequence);
         });
     };
 
+    handleChange = e => {
+        const { changeLevel } = this.props;
+        const level = LEVELS.find(level => level.id === +e.target.value);
+        changeLevel(level);
+    };
+
     render() {
-        const { round, message, activeColor, isPlaying } = this.props;
-        console.log('THIS PROPS RENDER', this.props);
+        const { round, message, activeColor, isPlaying, level } = this.props;
         return (
-            <>
-                <h2>Round {round || 0}</h2>
-                <p>{message && message}</p>
+            <main className="main">
+                <h1>Simon the Game</h1>
+                <h2>Round: {round || 0}</h2>
+                <h2>{message}</h2>
+                <Select
+                    options={LEVELS}
+                    defaultValue={level}
+                    handleChange={this.handleChange}
+                    disabled={isPlaying || round > 0}
+                />
                 <Container>
-                    {sounds.map((item, i) => (
+                    {SOUNDS.map((item, i) => (
                         <Square
                             item={item}
                             testFunc={this.testFunc}
@@ -120,21 +146,20 @@ class Game extends Component {
                                     ? activeColor
                                     : item.color
                             }
+                            round={round}
                             index={i}
                             activeColor={activeColor}
-                            isPlaying={isPlaying}>
-                            {console.log(
-                                'activeColor === item.activeColor',
-                                activeColor === item.activeColor,
-                                isPlaying,
-                            )}
-                        </Square>
+                            isPlaying={isPlaying}
+                        />
                     ))}
                 </Container>
-                <button type="button" onClick={this.startGame}>
-                    Start
-                </button>
-            </>
+                <Button
+                    disabled={isPlaying || round > 0}
+                    type="button"
+                    onClick={this.startGame}>
+                    Start Game
+                </Button>
+            </main>
         );
     }
 }
@@ -146,6 +171,7 @@ const mapStateToProps = state => ({
     userSequence: state.userSequence,
     round: state.round,
     message: state.message,
+    level: state.level,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -155,6 +181,7 @@ const mapDispatchToProps = dispatch => {
         togglePlaying: value => dispatch(togglePlaying(value)),
         setUserAnswer: index => dispatch(setUserAnswer(index)),
         gameOver: () => dispatch(gameOver()),
+        changeLevel: level => dispatch(changeLevel(level)),
     };
 };
 

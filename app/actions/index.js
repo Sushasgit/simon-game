@@ -4,7 +4,13 @@ import {
     SET_USER_SEQUENCE,
     GAME_OVER,
     SET_COLOR,
+    CHANGE_LEVEL,
 } from '../utils/constants';
+
+export const changeLevel = option => ({
+    type: CHANGE_LEVEL,
+    payload: option,
+});
 
 export const setActiveColor = index => ({
     type: SET_COLOR,

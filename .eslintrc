@@ -11,6 +11,7 @@
       "no-shadow": 0,
       "array-callback-return": 0,
       "no-lonely-if": 0,
+      "react/jsx-max-props-per-line": [2, {"maximum": 3, "when": "always" }],
       "prettier/prettier": "error"
     }
 }

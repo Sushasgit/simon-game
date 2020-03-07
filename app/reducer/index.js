@@ -9,13 +9,13 @@ import {
 
 const initialState = {
     level: {
-        type: 'low',
+        id: 1,
+        name: 'Easy',
         time: 1500,
     },
     sequence: [],
     isPlaying: false,
     userSequence: [],
-    gameOver: false,
     activeColor: null,
     round: 0,
     message: '',
@@ -26,10 +26,9 @@ export default function(state = initialState, { type, payload }) {
         case CHANGE_LEVEL:
             return {
                 ...state,
-                payload,
+                level: payload,
             };
         case NEXT_ROUND:
-            console.log('ADD_SEQUENCE', payload);
             return {
                 ...state,
                 round: state.round + 1,
@@ -54,7 +53,7 @@ export default function(state = initialState, { type, payload }) {
                 userSequence: [],
                 sequence: [],
                 round: 0,
-                message: 'Sorry you lost!',
+                message: 'Sorry, you lost. Try again',
             };
         case TOGGLE_PLAYING:
             return {
