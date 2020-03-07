@@ -107,7 +107,7 @@ class Game extends Component {
         }
     };
 
-    testFunc = index => {
+    handleClick = index => {
         const { sequence, userSequence, setUserAnswer } = this.props;
         SOUNDS[index].audio.play();
         this.hilghtItem(index);
@@ -139,7 +139,7 @@ class Game extends Component {
                     {SOUNDS.map((item, i) => (
                         <Square
                             item={item}
-                            testFunc={this.testFunc}
+                            handleClick={this.handleClick}
                             key={item.id}
                             color={
                                 activeColor === item.activeColor && isPlaying

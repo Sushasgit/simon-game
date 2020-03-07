@@ -8,7 +8,7 @@ const SquareButton = styled.button`
 
 const Square = ({
     color,
-    testFunc,
+    handleClick,
     item,
     index,
     activeColor,
@@ -17,7 +17,7 @@ const Square = ({
 }) => (
     <SquareButton
         onClick={() => {
-            testFunc(index, item);
+            handleClick(index, item);
         }}
         color={color}
         item={item}

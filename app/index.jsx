@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
-import App from './components/App';
+import Game from './containers/Game';
 import reducer from './reducer';
 
 import './style.css';
@@ -13,7 +13,7 @@ const store = compose(applyMiddleware(thunk))(createStore)(reducer);
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <Game />
     </Provider>,
     document.getElementById('app'),
 );

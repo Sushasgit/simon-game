@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -11,9 +12,9 @@ module.exports = {
   entry: [`${APP_DIR}/index.jsx`],
   output: {
     path: BUILD_DIR,
-    filename: 'bundle.js',
+    filename: './bundle.js',
   },
-  mode: 'development',
+  mode: 'production',
   devtool: 'cheap-module-eval-source-map',
   module: {
     rules: [
@@ -58,8 +59,9 @@ module.exports = {
       filename: './index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: 'bundle.css',
+      filename: './bundle.css',
     }),
+    new MinifyPlugin (),
   ],
   devServer: {
     contentBase: BUILD_DIR,
