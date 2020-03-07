@@ -4,7 +4,7 @@
   "description": "Simon is an easy game to play, where players get to watch, remember & repeat the exact sequence",
   "main": "app/index.jsx",
   "scripts": {
-    "start": "webpack-dev-server --hot --open",
+    "start": "webpack-dev-server --hot --open --mode development",
     "build": "webpack --progress --profile --colors",
     "precommit": "lint-staged",
     "lint": "eslint --ext .js --ext .jsx --fix ./app",
@@ -13,7 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
     "axios": "^0.19.2",
+    "color": "^3.1.2",
+    "file-loader": "^5.1.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-is": "^16.13.0",
@@ -21,7 +25,6 @@
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^5.0.1",
     "uid": "1.0.0"
   },
   "devDependencies": {
@@ -54,7 +57,7 @@
     "lint-staged": "^10.0.8",
     "mini-css-extract-plugin": "^0.9.0",
     "prettier": "^1.19.1",
-    "uglifyjs-webpack-plugin": "^2.2.0",
+    "terser-webpack-plugin": "^2.3.5",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

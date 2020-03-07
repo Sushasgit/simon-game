@@ -5,11 +5,11 @@ const TerserPlugin = require("terser-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
+
 const APP_DIR = path.resolve(__dirname, 'app');
 const BUILD_DIR = path.resolve(__dirname, 'dist');
 const env = process.env.NODE_ENV || 'development';
-console.log(env)
-console.log(APP_DIR)
+
 module.exports = {
   entry: [`${APP_DIR}/index.jsx`],
   output: {
@@ -46,13 +46,20 @@ module.exports = {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
+      {
+        test: /\.mp3$/,
+        include: APP_DIR,
+        loader: 'file-loader'
+      }
     ],
   },
   performance: {
     hints: process.env.NODE_ENV === 'production' ? 'warning' : false,
   },
   plugins: [
-    new Dotenv(),
+    new Dotenv({
+      path: path.resolve(__dirname,'.env')
+    }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([{ from: 'public', to: './public' }]),
     new HtmlWebPackPlugin({
@@ -73,25 +80,25 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.json']
   },
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        terserOptions: {
-          compress: {
-            dead_code: true,
-            conditionals: true,
-            booleans: true
-          },
-          module: false,
-          output: {
-            comments: false,
-            beautify: false
-          }
-        }
-      }),
-    ]
-  }
+  // optimization: {
+  //   minimize: true,
+  //   minimizer: [
+  //     new TerserPlugin({
+  //       cache: true,
+  //       parallel: true,
+  //       terserOptions: {
+  //         compress: {
+  //           dead_code: true,
+  //           conditionals: true,
+  //           booleans: true
+  //         },
+  //         module: false,
+  //         output: {
+  //           comments: false,
+  //           beautify: false
+  //         }
+  //       }
+  //     }),
+  //   ]
+  // }
 };
